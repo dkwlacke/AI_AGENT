@@ -4,7 +4,7 @@ from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP("weather-server")
 
-API_KEY = "fd1e16fcb82478078718e30bfdf05c31"
+API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
 
 @mcp.tool()
