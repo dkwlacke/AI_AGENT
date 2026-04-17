@@ -76,34 +76,34 @@ EXCHANGE_API_KEY = os.getenv("EXCHANGE_API_KEY", "")
 
 Пример инструмента для получения курса валют:
 
-@mcp.tool()
-async def get_exchange_rate(base: str, target: str) -> dict:
-    if not EXCHANGE_API_KEY:
-        return {"error": "EXCHANGE_API_KEY is not set"}
-
-    url = "https://api.example.com/rates"
-    params = {
-        "base": base,
-        "target": target,
-        "apikey": EXCHANGE_API_KEY
-    }
-
-    try:
-        async with httpx.AsyncClient(timeout=20.0) as client:
-            response = await client.get(url, params=params)
-            response.raise_for_status()
-            data = response.json()
-
-        return {
+    @mcp.tool()
+    async def get_exchange_rate(base: str, target: str) -> dict:
+        if not EXCHANGE_API_KEY:
+            return {"error": "EXCHANGE_API_KEY is not set"}
+    
+        url = "https://api.example.com/rates"
+        params = {
             "base": base,
             "target": target,
-            "rate": data.get("rate")
+            "apikey": EXCHANGE_API_KEY
         }
-
-    except httpx.HTTPStatusError as e:
-        return {"error": f"HTTP error: {e.response.status_code}"}
-    except Exception as e:
-        return {"error": str(e)}
+    
+        try:
+            async with httpx.AsyncClient(timeout=20.0) as client:
+                response = await client.get(url, params=params)
+                response.raise_for_status()
+                data = response.json()
+    
+            return {
+                "base": base,
+                "target": target,
+                "rate": data.get("rate")
+            }
+    
+        except httpx.HTTPStatusError as e:
+            return {"error": f"HTTP error: {e.response.status_code}"}
+        except Exception as e:
+            return {"error": str(e)}
 
 4. Использовать простые аргументы в сигнатуре функции: `str`, `int`, `float`, `bool`.
    Это упрощает генерацию аргументов для LLM.
